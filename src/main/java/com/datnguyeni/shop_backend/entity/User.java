@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,7 +17,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -40,7 +38,7 @@ public class User {
     @Enumerated(EnumType.STRING) // Lưu dưới dạng chuỗi 'ACTIVE' hoặc 'BLOCKED'
     private UserStatus status = UserStatus.ACTIVE;
 
-    @CreationTimestamp // Tự động lấy thời gian tạo
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

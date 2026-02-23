@@ -25,7 +25,10 @@ public class Payment {
 
     private String method;
     private String status;
-    private CreationTimestamp createdAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "order_id")

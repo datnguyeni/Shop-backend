@@ -11,12 +11,11 @@ import org.springframework.validation.annotation.Validated;
 @NoArgsConstructor
 @Validated
 @Entity
+@Table(name = "carts")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private Long userid;
+    private Long userId;
 }
