@@ -1,6 +1,6 @@
 package com.datnguyeni.shop_backend.entity.enums;
 
-public enum Role {
+public enum RoleType {
     GUEST,
     USER,
     ADMIN

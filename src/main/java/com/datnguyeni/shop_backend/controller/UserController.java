@@ -6,6 +6,7 @@ import com.datnguyeni.shop_backend.dto.responseDTO.ApiResponse;
 import com.datnguyeni.shop_backend.dto.responseDTO.UserResponse;
 import com.datnguyeni.shop_backend.entity.User;
 import com.datnguyeni.shop_backend.mapper.UserMapper;
+
 import com.datnguyeni.shop_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,8 +19,8 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
-    private UserMapper userMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserController (UserService userService, UserMapper userMapper) {

@@ -14,9 +14,8 @@ import java.util.Set;
 @Setter
 @Builder
 public class UserResponse {
-
     private String email;
-    private String fullName;
+    private String lastname;
+    private String firstname;
     private String phone;
-    Set<Role> roles;
 }

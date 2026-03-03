@@ -22,8 +22,11 @@ public class UserCreationRequest {
     @Size(min = 6, message = "PASSWORD_TOO_SHORT")
     private String password;
 
-    @NotBlank(message = "FULLNAME_REQUIRED")
-    private String fullName;
+    @NotBlank(message = "LASTNAME_REQUIRED")
+    private String lastname;
+
+    @NotBlank(message = "FIRSTNAME_REQUIRED")
+    private String firstname;
 
     @Pattern(regexp = "^[0-9]{10}$", message = "INVALID_PHONE")
     private String phone;
