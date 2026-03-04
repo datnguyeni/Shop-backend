@@ -1,5 +1,6 @@
 package com.datnguyeni.shop_backend.mapper;
 
+import com.datnguyeni.shop_backend.dto.requestDTO.LoginRequest;
 import com.datnguyeni.shop_backend.dto.requestDTO.UserCreationRequest;
 import com.datnguyeni.shop_backend.dto.requestDTO.UserUpdateRequest;
 import com.datnguyeni.shop_backend.dto.responseDTO.UserResponse;
@@ -18,4 +19,5 @@ public interface UserMapper {
     // ignore the role filed when update
     @Mapping(target = "roles", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
+
 }

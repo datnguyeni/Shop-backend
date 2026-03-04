@@ -1,15 +1,12 @@
 package com.datnguyeni.shop_backend.service;
 
-import com.datnguyeni.shop_backend.entity.Role;
 import com.datnguyeni.shop_backend.entity.User;
-import com.datnguyeni.shop_backend.mapper.UserMapper;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,29 +20,35 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String SIGNER_KEY;
 
-    public String generateToken(User user) throws JOSEException {
+    public String generateToken(User user) {
 
-        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
+        try {
 
-        // do not let vulnerable information here
-        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getFirstname())
-                .issuer("shop-backend")
-                .issueTime(new Date())
-                .expirationTime(Date.from(
-                        Instant.now().plus(1, ChronoUnit.HOURS)
-                ))
-                .claim("roles", buildScope(user))
-                .build();
+            JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
 
-        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+            JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                    .subject(user.getUsername())
+                    .issuer("shop-backend")
+                    .issueTime(new Date())
+                    .expirationTime(Date.from(
+                            Instant.now().plus(1, ChronoUnit.HOURS)
+                    ))
+                    .claim("roles", buildScope(user))
+                    .build();
 
-        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
-        jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+            JWSObject jwsObject = new JWSObject(
+                    jwsHeader,
+                    new Payload(jwtClaimsSet.toJSONObject())
+            );
 
-        return jwsObject.serialize();
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+
+            return jwsObject.serialize();
+
+        } catch (JOSEException e) {
+            throw new RuntimeException("Error while generating JWT token", e);
+        }
     }
-
 
     public boolean validateToken(String token){
 
@@ -65,21 +68,21 @@ public class JwtService {
             // 3. Check if 'exp' exists and is in the future
             return expirationTime != null && expirationTime.after(new Date());
 
-
         } catch (Exception e) {
             return false;
         }
 
     }
 
-    //"scope": "ROLE_USER", "ROLE_ADMIN"
+
+    //"scope": "USER", "ADMIN"
     private String buildScope(User user){
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
             return "";
         }
 
         return user.getRoles().stream()
-                .map(Role::getRoleName)
+                .map(role -> "ROLE_" + role.getRoleName().toUpperCase().trim())
                 .collect(Collectors.joining(" "));
     }
 

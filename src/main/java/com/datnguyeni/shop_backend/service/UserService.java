@@ -48,12 +48,13 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setStatus(UserStatus.ACTIVE);
+        user.setEmail(request.getEmail().toLowerCase().trim());
 
-        Role role = roleRepository.findByRoleName("ROLE_USER")
+        // 1 user has many roles
+        Role role = roleRepository.findByRoleName("USER")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        // 1 user has many role
-
         user.setRoles(Set.of(role));
+
         User savedUser = userRepository.save(user);
 
         return userMapper.toUserResponse(savedUser);
