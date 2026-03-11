@@ -1,12 +1,12 @@
 package com.datnguyeni.shop_backend.dto.responseDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
+@Setter
 public class LoginResponse {
     private String accessToken;
     private String tokenType;

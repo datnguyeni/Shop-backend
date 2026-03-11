@@ -12,6 +12,7 @@ import com.datnguyeni.shop_backend.mapper.UserMapper;
 import com.datnguyeni.shop_backend.repository.RoleRepository;
 import com.datnguyeni.shop_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +36,14 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // == ROLE_ADMIN
     public List<UserResponse> findAll() {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toUserResponse)
                 .toList();
     }
+
 
     public UserResponse addUser(UserCreationRequest request) {
 
@@ -59,6 +62,7 @@ public class UserService {
 
         return userMapper.toUserResponse(savedUser);
     }
+
 
     public UserResponse updateUser(Long id, UserUpdateRequest userUpdateRequest) {
 
