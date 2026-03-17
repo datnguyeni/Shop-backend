@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,7 @@ public class JwtService {
                     .expirationTime(Date.from(
                             Instant.now().plus(1, ChronoUnit.HOURS)
                     ))
+                    .jwtID(UUID.randomUUID().toString())
                     .claim("roles", buildScope(user))
                     .build();
 
@@ -50,29 +52,29 @@ public class JwtService {
         }
     }
 
-    public boolean validateToken(String token){
 
-        try{
-
-            JWSObject jwsObject = JWSObject.parse(token);
-            // 1. Verify Signature
-            JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
-            // header + current payload
-            if(!jwsObject.verify(verifier)){
-                return false;
-            }
-            // 2. Parse Claims
-            JWTClaimsSet claims = JWTClaimsSet.parse(jwsObject.getPayload().toString());
-            Date expirationTime = claims.getExpirationTime();
-
-            // 3. Check if 'exp' exists and is in the future
-            return expirationTime != null && expirationTime.after(new Date());
-
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
+//    public boolean validateToken(String token){
+//        try{
+//
+//            JWSObject jwsObject = JWSObject.parse(token);
+//            // 1. Verify Signature
+//            JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+//            // header + current payload
+//            if(!jwsObject.verify(verifier)){
+//                return false;
+//            }
+//            // 2. Parse Claims
+//            JWTClaimsSet claims = JWTClaimsSet.parse(jwsObject.getPayload().toString());
+//            Date expirationTime = claims.getExpirationTime();
+//
+//            // 3. Check if 'exp' exists and is in the future
+//            return expirationTime != null && expirationTime.after(new Date());
+//
+//        } catch (Exception e) {
+//            return false;
+//        }
+//
+//    }
 
 
     //"scope": "USER", "ADMIN"
