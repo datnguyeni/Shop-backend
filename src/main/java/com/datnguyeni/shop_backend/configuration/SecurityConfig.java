@@ -84,6 +84,7 @@ public class SecurityConfig {
     }
 
     // DÙNG CHO API: Người gác cổng (Giải mã + Check hạn + Check Blacklist)
+    
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(), "HmacSHA256");
@@ -119,6 +120,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/product*/**").permitAll()
                         .requestMatchers("/user/create").permitAll()
                         .anyRequest().authenticated()
                 )
