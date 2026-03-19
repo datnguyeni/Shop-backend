@@ -42,6 +42,7 @@ public class SecurityConfig {
         this.invalidatedTokenRepository = invalidatedTokenRepository;
     }
 
+
     // ==========================================
     // CÁC BEAN DÙNG CHO LUỒNG LOGIN
     // ==========================================
@@ -65,7 +66,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 
     // ==========================================
     // CÁC BEAN DÙNG CHO OAUTH2 RESOURCE SERVER (CHECK TOKEN KHI GỌI API)
@@ -111,6 +111,7 @@ public class SecurityConfig {
         return jwtDecoder;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -120,7 +121,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/product*/**").permitAll()
+                        .requestMatchers("/product/**").permitAll()
                         .requestMatchers("/user/create").permitAll()
                         .anyRequest().authenticated()
                 )
