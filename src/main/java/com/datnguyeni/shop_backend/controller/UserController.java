@@ -9,6 +9,7 @@ import com.datnguyeni.shop_backend.mapper.UserMapper;
 
 import com.datnguyeni.shop_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,14 +53,14 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/{id}")
-    public ApiResponse<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
+    @PutMapping("/my-profile")
+    public ApiResponse<UserResponse> updateMyProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
 
-        UserResponse updatedUser = userService.updateUser(id, userUpdateRequest);
+        UserResponse updatedUser = userService.updateMyProfile(userUpdateRequest);
 
         return ApiResponse.<UserResponse>builder()
                 .code(200)
-                .message("User updated successfully")
+                .message("Profile updated successfully")
                 .data(updatedUser)
                 .build();
     }

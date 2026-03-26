@@ -19,6 +19,6 @@ public class ProductFilterRequest extends PagingRequest {
     private Double maxPrice;
     private String productSize;
 
-    private Long categoryParentId;
+    private Long categoryId;
 
 }

@@ -11,8 +11,14 @@ import com.datnguyeni.shop_backend.entity.enums.UserStatus;
 import com.datnguyeni.shop_backend.mapper.UserMapper;
 import com.datnguyeni.shop_backend.repository.RoleRepository;
 import com.datnguyeni.shop_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,14 +70,13 @@ public class UserService {
     }
 
 
-    public UserResponse updateUser(Long id, UserUpdateRequest userUpdateRequest) {
+    @Transactional
+    public UserResponse updateMyProfile(UserUpdateRequest request) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User currentUser = getCurrentUser();
+        userMapper.updateUser(currentUser, request);
 
-        userMapper.updateUser(user, userUpdateRequest);
-
-        return userMapper.toUserResponse(userRepository.save(user));
+        return userMapper.toUserResponse(userRepository.save(currentUser));
     }
 
     public void deleteUser(Long id) {
@@ -81,5 +86,18 @@ public class UserService {
 
         userRepository.delete(user);
     }
+
+    public User getCurrentUser() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        User loggedInUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Lỗi: Tài khoản không tồn tại trong hệ thống!"));
+
+        return loggedInUser;
+    }
+
 
 }

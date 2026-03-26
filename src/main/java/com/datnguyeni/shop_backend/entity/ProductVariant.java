@@ -3,6 +3,8 @@ package com.datnguyeni.shop_backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "product_variants") // Ánh xạ đúng tên bảng trong SQL
 @Getter
@@ -23,5 +25,24 @@ public class ProductVariant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @OneToMany(mappedBy = "variant", fetch = FetchType.LAZY)
+    private Set<ProductImage> images;
+
+    @Transient
+    public String getDefaultImageUrl() {
+        if (this.images == null || this.images.isEmpty()) {
+            return null;
+        }
+
+        for (ProductImage img : this.images) {
+            if (img.isDefault()) {
+                return img.getImageUrl();
+            }
+        }
+
+        return this.images.iterator().next().getImageUrl();
+    }
+
 
 }

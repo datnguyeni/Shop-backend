@@ -38,6 +38,8 @@ public class ProductService {
                 .map(productMapper::toProductsResponse);
     }
 
+
+
     public ProductDetailResponse getProductDetail(Long id) {
 
         return productRepository.findById(id)
@@ -48,12 +50,9 @@ public class ProductService {
 
     public Page<ProductsResponse> searchProducts(Pageable pageable, ProductFilterRequest productFilterRequest) {
 
-
-        // Kết hợp các điều kiện lại với nhau bằng lệnh .and()
-        Specification<Product> spec = Specification.where(ProductSpecification.hasPriceBetween(productFilterRequest.getMinPrice(), productFilterRequest.getMaxPrice()));
-//                .and(ProductSpecification.hasPriceBetween(request.getMinPrice(), request.getMaxPrice()))
-//                .and(ProductSpecification.hasCategoryId(request.getCategoryId()));
-
+        // Kết hợp TẤT CẢ các điều kiện lại với nhau: Vừa lọc Giá, vừa lọc Danh mục
+        Specification<Product> spec = Specification.where(ProductSpecification.hasPriceBetween(productFilterRequest.getMinPrice(), productFilterRequest.getMaxPrice()))
+                .and(ProductSpecification.hasCategoryId(productFilterRequest.getCategoryId()));
 
         return productRepository.findAll(spec, pageable)
                 .map(productMapper::toProductsResponse);

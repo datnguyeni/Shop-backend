@@ -122,6 +122,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/product/**").permitAll()
+                        .requestMatchers("/category/**").permitAll()
+                        .requestMatchers("/cart/**").permitAll()
                         .requestMatchers("/user/create").permitAll()
                         .anyRequest().authenticated()
                 )
