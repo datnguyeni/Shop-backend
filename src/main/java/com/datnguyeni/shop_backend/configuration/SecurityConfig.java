@@ -124,10 +124,10 @@ public class SecurityConfig {
                         .requestMatchers("/product/**").permitAll()
                         .requestMatchers("/category/**").permitAll()
                         .requestMatchers("/cart/**").permitAll()
-                        .requestMatchers("/user/create").permitAll()
+                        .requestMatchers("/user/**").permitAll()
 
-                        .requestMatchers("/oauth2/authorization/**").permitAll()
-                        .requestMatchers("/login/**").permitAll()
+//                        .requestMatchers("/oauth2/authorization/**").permitAll()
+//                        .requestMatchers("/login/**").permitAll()
 
 
                         .anyRequest().authenticated()
@@ -136,6 +136,8 @@ public class SecurityConfig {
 //                .oauth2Login(oauth -> oauth
 //                        .successHandler(oAuth2SuccessHandler)
 //                )
+
+//                .oauth2Login(org.springframework.security.config.Customizer.withDefaults())
 
                 // DÙNG JWT CHO API
                 .oauth2ResourceServer(oauth2 ->
