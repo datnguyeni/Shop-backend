@@ -125,13 +125,25 @@ public class SecurityConfig {
                         .requestMatchers("/category/**").permitAll()
                         .requestMatchers("/cart/**").permitAll()
                         .requestMatchers("/user/create").permitAll()
+
+                        .requestMatchers("/oauth2/authorization/**").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+
+
                         .anyRequest().authenticated()
                 )
+//                // LOGIN GOOGLE
+//                .oauth2Login(oauth -> oauth
+//                        .successHandler(oAuth2SuccessHandler)
+//                )
+
+                // DÙNG JWT CHO API
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt ->
-                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()) // Bật JWT chuẩn
+                        oauth2.jwt(jwt -> jwt
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
                 )
+
                 .build();
     }
 }
