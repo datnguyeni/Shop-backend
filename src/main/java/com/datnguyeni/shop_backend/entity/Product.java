@@ -25,7 +25,7 @@ public class Product {
     private Double basePrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id") // Trùng với tên cột FK trong SQL
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)

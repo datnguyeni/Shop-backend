@@ -13,7 +13,7 @@ import org.springframework.data.domain.PageRequest;
 @AllArgsConstructor
 public class ProductFilterRequest extends PagingRequest {
 
-    private String productName;
+    private String name;
     private Double price;
     private Double minPrice;
     private Double maxPrice;

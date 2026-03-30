@@ -13,22 +13,29 @@ import java.util.Optional;
 
 @Service
 public class CategoryService {
-
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository,  CategoryMapper categoryMapper) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+
     }
 
-    public List<CategoryResponse> getSubCategories(Long parentId) {
-        // 1. Lấy danh sách Entity từ DB
-        List<Category> children = categoryRepository.findByParentId(parentId);
 
-        // 2. Dùng Stream để lặp và nhờ categoryMapper dịch sang DTO
-        return children.stream()
+    public List<CategoryResponse> getCategoryTree() {
+        List<Category> rootCategories = categoryRepository.findByParentIsNull();
+        return rootCategories.stream()
+                .map(categoryMapper::toCategoryResponse)
+                .toList();
+    }
+
+    public List<CategoryResponse> getSubCategoriesBySlug(String slug) {
+        Category parent = categoryRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        return parent.getChildren().stream()
                 .map(categoryMapper::toCategoryResponse)
                 .toList();
     }

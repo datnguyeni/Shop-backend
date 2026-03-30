@@ -19,22 +19,9 @@ public class ProductSpecification {
     }
 
 
-    public static Specification<Product> hasCategoryId(Long categoryId) {
-        return (root, query, cb) -> {
-            if (categoryId == null) return null;
+    public static Specification<Product> hasNameLike(String name) {
 
-            // JOIN từ Product sang Category
-            Join<Product, Category> categoryJoin = root.join("category", JoinType.INNER);
-
-            // Điều kiện 1: Sản phẩm thuộc đúng Danh mục đó (Ví dụ: Áo sơ mi)
-            Predicate directMatch = cb.equal(categoryJoin.get("id"), categoryId);
-
-            // Điều kiện 2: Sản phẩm thuộc Danh mục con của Danh mục đó (Ví dụ: Áo Nam)
-            Predicate parentMatch = cb.equal(categoryJoin.get("parent").get("id"), categoryId);
-
-            // Gộp 2 điều kiện bằng toán tử OR
-            return cb.or(directMatch, parentMatch);
-        };
+        return (root, query, cb) -> cb.like(root.get("name"), name + "%");
     }
 
 

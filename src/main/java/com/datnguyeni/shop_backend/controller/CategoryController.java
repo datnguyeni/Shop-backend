@@ -23,15 +23,22 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/{id}/sub-categories")
-    public ApiResponse<List<CategoryResponse>> getSubCategories(@PathVariable Long id) {
+    @GetMapping("/menu")
+    public ApiResponse<List<CategoryResponse>> getMenu() {
+        return ApiResponse.<List<CategoryResponse>>builder()
+                .code(200)
+                .message("Get menu tree successfully")
+                .data(categoryService.getCategoryTree())
+                .build();
+    }
 
-        List<CategoryResponse> responseList = categoryService.getSubCategories(id);
 
+    @GetMapping("/{slug}")
+    public ApiResponse<List<CategoryResponse>> getSubCategories(@PathVariable String slug) {
         return ApiResponse.<List<CategoryResponse>>builder()
                 .code(200)
                 .message("Get sub-categories successfully")
-                .data(responseList)
+                .data(categoryService.getSubCategoriesBySlug(slug))
                 .build();
     }
 }
