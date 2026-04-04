@@ -19,6 +19,7 @@ public interface CartItemMapper {
     @Mapping(source = "variant.product.name", target = "productName")
     @Mapping(source = "variant.product.basePrice", target = "basePrice")
     @Mapping(source = "variant.defaultImageUrl", target = "imageUrl")
+    @Mapping(source= "variant.color", target ="color")
     CartItemResponse toCartItemResponse(CartItem cartItem);
 
     List<CartItemResponse> toItemResponseList(List<CartItem> items);

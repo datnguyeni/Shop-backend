@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CartItemResponse {
 
-    private Long cartId;  // id cart follow user
-    private Long id;      // add follow number
+    private Long cartId;  // id cart - user
+    private Long id;      // add  number
     private Long variantId; // variant id
     private Long quantity;
     private Double basePrice;
@@ -18,5 +18,7 @@ public class CartItemResponse {
     private String productName;
     private String imageUrl;
     private Double subTotal;
+
+    private String color;
 
 }

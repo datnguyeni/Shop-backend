@@ -11,6 +11,6 @@ import lombok.*;
 public class ProductImageResponse {
 
     private String imageUrl;
-    private boolean isDefault;
+    private boolean defaultValue;
 
 }

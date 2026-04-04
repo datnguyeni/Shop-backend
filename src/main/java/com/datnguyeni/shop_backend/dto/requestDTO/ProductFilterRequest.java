@@ -13,12 +13,15 @@ import org.springframework.data.domain.PageRequest;
 @AllArgsConstructor
 public class ProductFilterRequest extends PagingRequest {
 
-    private String name;
-    private Double price;
+    private String keyword;
+
+    private Double basePrice;
     private Double minPrice;
     private Double maxPrice;
     private String productSize;
 
     private Long categoryId;
+    private String categorySlug;
 
+    // Các hàm Getters/Setters tương ứng...
 }

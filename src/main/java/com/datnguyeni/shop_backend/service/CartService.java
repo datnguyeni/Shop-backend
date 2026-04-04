@@ -42,6 +42,7 @@ public class CartService {
     public Cart getOrCreateCart(User user) {
         return cartRepository.findByUser(user).orElseGet(() -> {
             log.info("Creating new cart for user {}", user.getId());
+
             Cart newCart = new Cart();
             newCart.setUser(user);
             return cartRepository.save(newCart);
@@ -85,8 +86,8 @@ public class CartService {
                 throw new RuntimeException("Số lượng vượt quá sản phẩm có sẵn trong kho");
             }
             itemToSave.setQuantity((long) newQuantity);
-        } else {
 
+        } else {
             if (request.getQuantity() > variant.getStockQuantity()) {
                 throw new RuntimeException("Số lượng vượt quá sản phẩm có sẵn trong kho");
             }
@@ -105,14 +106,13 @@ public class CartService {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm này trong giỏ hàng"));
 
-        // Bảo mật: Đảm bảo item này thuộc về user đang thao tác
         if (!cartItem.getCart().getUser().getId().equals(user.getId())) {
             throw new RuntimeException("Bạn không có quyền thao tác trên giỏ hàng này");
         }
 
         if (newQuantity <= 0) {
             cartItemRepository.delete(cartItem);
-            return null; // Hoặc ném Exception tùy business logic của em
+            return null;
         }
 
         // Validate: Kiểm tra tồn kho
@@ -143,4 +143,6 @@ public class CartService {
         Cart cart = this.getOrCreateCart(user);
         cartItemRepository.deleteAllByCartId(cart.getId());
     }
+
+
 }

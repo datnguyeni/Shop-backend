@@ -38,7 +38,7 @@ public class CartController {
                 .build();
     }
 
-    @PostMapping("/items/add")
+    @PostMapping("/items")
     public ApiResponse<CartItemResponse> addToCart(@RequestBody AddToCartRequest request) {
         User currentUser = userService.getCurrentUser();
         CartItemResponse response = cartService.addToCart(request, currentUser);

@@ -20,4 +20,7 @@ public class UserUpdateRequest {
     @Pattern(regexp = "^[0-9]{10}$", message = "INVALID_PHONE")
     private String phone;
 
+    private String lastName;
+    private String firstName;
+
 }

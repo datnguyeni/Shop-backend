@@ -26,28 +26,40 @@ public class ProductService {
 
 
     public Page<ProductsResponse> getProductsByCategorySlug(String slug, Pageable pageable) {
-        // Kiểm tra tồn tại qua CategoryRepository (cần thêm method existsBySlug)
         return productRepository.findByCategory_Slug(slug, pageable)
                 .map(productMapper::toProductsResponse);
     }
 
 
-
     //  Search/Filter
+//    public Page<ProductsResponse> getFilteredProducts(ProductFilterRequest filter, Pageable pageable) {
+//        Specification<Product> spec = Specification.where(
+//                        ProductSpecification.hasPriceBetween(filter.getMinPrice(), filter.getMaxPrice()))
+//                .and(ProductSpecification.hasNameLike(filter.getName()));
+//
+//        return productRepository.findAll(spec, pageable)
+//                .map(productMapper::toProductsResponse);
+//    }
+
+
     public Page<ProductsResponse> getFilteredProducts(ProductFilterRequest filter, Pageable pageable) {
+
         Specification<Product> spec = Specification.where(
-                        ProductSpecification.hasPriceBetween(filter.getMinPrice(), filter.getMaxPrice()))
-                .and(ProductSpecification.hasNameLike(filter.getName()));
+                        ProductSpecification.hasPriceBetween(filter.getMinPrice(), filter.getMaxPrice())
+                )
+                .and(ProductSpecification.hasKeyword(filter.getKeyword()))          // Lấy keyword từ DTO
+                .and(ProductSpecification.hasCategorySlug(filter.getCategorySlug())); // Lấy slug từ DTO
+
 
         return productRepository.findAll(spec, pageable)
                 .map(productMapper::toProductsResponse);
     }
-
-
 
     public ProductDetailResponse getProductDetail(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::toProductDetailResponse)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
+
+
 }

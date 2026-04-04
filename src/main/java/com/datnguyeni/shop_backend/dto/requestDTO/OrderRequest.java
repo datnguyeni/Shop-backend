@@ -1,6 +1,5 @@
 package com.datnguyeni.shop_backend.dto.requestDTO;
 
-
 import lombok.*;
 
 @Getter
@@ -8,11 +7,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddToCartRequest {
+public class OrderRequest {
+    private String address;
+    private String phone;
 
-    private Long variantId;
-    private Long quantity;
-    private String size;
-    private String color;
+
 
 }

@@ -53,17 +53,6 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/my-profile")
-    public ApiResponse<UserResponse> updateMyProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
-
-        UserResponse updatedUser = userService.updateMyProfile(userUpdateRequest);
-
-        return ApiResponse.<UserResponse>builder()
-                .code(200)
-                .message("Profile updated successfully")
-                .data(updatedUser)
-                .build();
-    }
 
     @DeleteMapping("/{id}")
     ApiResponse<String> deleteUser(@PathVariable Long id) {
@@ -71,6 +60,30 @@ public class UserController {
         return ApiResponse.<String>builder()
                 .code(204)
                 .message("User has been deleted")
+                .build();
+    }
+
+    @GetMapping("/my-profile")
+    public ApiResponse<UserResponse> getMyProfile() {
+        UserResponse myProfile = userService.getMyProfile();
+
+        return ApiResponse.<UserResponse>builder()
+                .code(200)
+                .message("Lấy thông tin cá nhân thành công")
+                .data(myProfile)
+                .build();
+    }
+
+
+    @PutMapping("/my-profile")
+    public ApiResponse<UserResponse> updateMyProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
+
+        UserResponse updatedUser = userService.updateMyProfile(userUpdateRequest);
+
+        return ApiResponse.<UserResponse>builder()
+                .code(200)
+                .message("Cập nhật thông tin cá nhân thành công")
+                .data(updatedUser)
                 .build();
     }
 }

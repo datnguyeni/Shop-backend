@@ -1,15 +1,15 @@
-spring:
-  datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=shop_backend;encrypt=true;trustServerCertificate=true
-    username: sa
-    password: 1
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.SQLServerDialect
+#spring:
+#  datasource:
+#    url: jdbc:sqlserver://localhost:1433;databaseName=shop_backend;encrypt=true;trustServerCertificate=true
+#    username: sa
+#    password: 1
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.SQLServerDialect

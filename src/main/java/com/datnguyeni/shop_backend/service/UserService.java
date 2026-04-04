@@ -35,7 +35,10 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       UserMapper userMapper,
+                       RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
@@ -52,7 +55,6 @@ public class UserService {
 
 
     public UserResponse addUser(UserCreationRequest request) {
-
         User user = userMapper.toUser(request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -70,33 +72,43 @@ public class UserService {
     }
 
 
-    @Transactional
-    public UserResponse updateMyProfile(UserUpdateRequest request) {
-
-        User currentUser = getCurrentUser();
-        userMapper.updateUser(currentUser, request);
-
-        return userMapper.toUserResponse(userRepository.save(currentUser));
-    }
-
     public void deleteUser(Long id) {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         userRepository.delete(user);
     }
 
+
     public User getCurrentUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String email = authentication.getName();
 
         User loggedInUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Lỗi: Tài khoản không tồn tại trong hệ thống!"));
+                .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại!"));
 
         return loggedInUser;
+    }
+
+
+    public UserResponse getMyProfile() {
+        User loggedInUser = getCurrentUser();
+        return userMapper.toUserResponse(loggedInUser);
+    }
+
+
+    public UserResponse updateMyProfile(UserUpdateRequest request) {
+
+        User loggedInUser = getCurrentUser();
+
+        loggedInUser.setFirstname(request.getFirstName());
+        loggedInUser.setLastname(request.getLastName());
+        loggedInUser.setPhone(request.getPhone());
+
+        User updatedUser = userRepository.save(loggedInUser);
+
+        return userMapper.toUserResponse(updatedUser);
     }
 
 

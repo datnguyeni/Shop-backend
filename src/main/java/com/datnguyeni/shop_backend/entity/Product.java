@@ -34,4 +34,8 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<ProductVariant> variants;
 
+
+
+
+
 }

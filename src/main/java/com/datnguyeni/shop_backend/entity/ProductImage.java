@@ -23,7 +23,7 @@ public class ProductImage {
     private String imageUrl;
 
     @Column(name = "is_default")
-    private boolean isDefault;
+    private boolean defaultValue;
 
     @Column(name = "display_order")
     private Integer displayOrder;

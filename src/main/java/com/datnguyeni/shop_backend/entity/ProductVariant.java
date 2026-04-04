@@ -36,7 +36,7 @@ public class ProductVariant {
         }
 
         for (ProductImage img : this.images) {
-            if (img.isDefault()) {
+            if (img.isDefaultValue()) {
                 return img.getImageUrl();
             }
         }
