@@ -24,4 +24,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     @EntityGraph(attributePaths = {"images", "variants", "category"})
     Optional<Product> findById(Long id);
+
 }

@@ -1,6 +1,7 @@
 package com.datnguyeni.shop_backend.dto.responseDTO;
 
 import lombok.*;
+import org.mapstruct.Mapping;
 
 @AllArgsConstructor
 @Builder
@@ -17,5 +18,6 @@ public class OrderItemResponse {
 
     private int quantity;
     private Double price;       // Giá tại thời điểm mua
+    private String imageUrl;
 
 }

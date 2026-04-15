@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,12 +30,14 @@ public class CartItem {
     private ProductVariant variant;
 
     @Transient
-    public Double getSubTotal() {
+    public BigDecimal getSubTotal() {
         if (this.quantity == null || this.variant == null ||
                 this.variant.getProduct() == null || this.variant.getProduct().getBasePrice() == null) {
-            return 0.0;
+            return BigDecimal.ZERO;
         }
-        return this.quantity * this.variant.getProduct().getBasePrice();
+
+        return BigDecimal.valueOf(this.quantity)
+                .multiply(this.variant.getProduct().getBasePrice());
     }
 
 }

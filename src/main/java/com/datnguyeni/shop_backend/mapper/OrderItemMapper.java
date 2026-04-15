@@ -16,6 +16,7 @@ public interface OrderItemMapper {
     @Mapping(source = "variant.product.name", target = "productName")
     @Mapping(source = "variant.size", target = "size")
     @Mapping(source = "variant.color", target = "color")
+    @Mapping(source = "variant.defaultImageUrl", target = "imageUrl")
     OrderItemResponse toOrderItemResponse(OrderItem orderItem);
 
 

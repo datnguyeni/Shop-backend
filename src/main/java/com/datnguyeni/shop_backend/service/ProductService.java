@@ -15,6 +15,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,16 +34,6 @@ public class ProductService {
 
 
     //  Search/Filter
-//    public Page<ProductsResponse> getFilteredProducts(ProductFilterRequest filter, Pageable pageable) {
-//        Specification<Product> spec = Specification.where(
-//                        ProductSpecification.hasPriceBetween(filter.getMinPrice(), filter.getMaxPrice()))
-//                .and(ProductSpecification.hasNameLike(filter.getName()));
-//
-//        return productRepository.findAll(spec, pageable)
-//                .map(productMapper::toProductsResponse);
-//    }
-
-
     public Page<ProductsResponse> getFilteredProducts(ProductFilterRequest filter, Pageable pageable) {
 
         Specification<Product> spec = Specification.where(
@@ -61,5 +53,13 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
+
+    public List<ProductsResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+
+        return products.stream()
+                .map(productMapper::toProductsResponse)
+                .toList();
+    }
 
 }

@@ -1,7 +1,9 @@
 package com.datnguyeni.shop_backend.service;
 
+import com.datnguyeni.shop_backend.Projection.RevenueChartProjection;
 import com.datnguyeni.shop_backend.dto.requestDTO.OrderRequest;
 import com.datnguyeni.shop_backend.dto.responseDTO.OrderResponse;
+import com.datnguyeni.shop_backend.dto.responseDTO.RevenueResponse;
 import com.datnguyeni.shop_backend.entity.*;
 import com.datnguyeni.shop_backend.mapper.OrderItemMapper;
 import com.datnguyeni.shop_backend.mapper.OrderMapper;
@@ -10,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -22,6 +28,7 @@ public class OrderService {
     private final ProductVariantRepository variantRepository;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
+    private final OrderItemRepository orderItemRepository;
 
     @Transactional(rollbackFor = Exception.class)
     public OrderResponse createOrder(User user, OrderRequest request) {
@@ -40,31 +47,25 @@ public class OrderService {
         order.setAddress(request.getAddress());
         order.setPhone(request.getPhone());
         order.setStatus("PENDING");
-        double totalAmount = 0.0;
+        BigDecimal totalAmount = BigDecimal.ZERO;
 
         // 3. Xử lý từng món hàng trong giỏ
         for (CartItem cartItem : cartItems) {
             ProductVariant variant = cartItem.getVariant();
 
-            // Kiểm tra tồn kho
             if (variant.getStockQuantity() < cartItem.getQuantity()) {
                 throw new RuntimeException("Sản phẩm mã " + variant.getSku() + " không đủ số lượng trong kho!");
             }
 
-            // Trừ tồn kho và lưu lại
             variant.setStockQuantity(variant.getStockQuantity() - cartItem.getQuantity());
             variantRepository.save(variant);
 
-            // Map từ CartItem sang OrderItem
             OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
-
-            //  set Order cha cho OrderItem con
             orderItem.setOrder(order);
 
             order.getOrderItems().add(orderItem);
 
-            // Cộng dồn tổng tiền ( dùng luôn hàm getSubTotal trong CartItem)
-            totalAmount += cartItem.getSubTotal();
+            totalAmount = totalAmount.add(cartItem.getSubTotal());
         }
 
         order.setTotalAmount(totalAmount);
@@ -77,11 +78,66 @@ public class OrderService {
         return orderMapper.toOrderResponse(savedOrder);
     }
 
+
     public OrderResponse getOrderDetails(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng mã : " + orderId));
 
         return orderMapper.toOrderResponse(order);
     }
+
+
+    public RevenueResponse getRevenueStats() {
+
+        BigDecimal totalRev = orderRepository.getTotalAmount();
+        Long totalOrdersCount = orderRepository.getTotalOrders();
+
+        Long totalItems = orderItemRepository.getTotalQuantity();
+
+        return RevenueResponse.builder()
+                .totalAmount(totalRev != null ? totalRev : BigDecimal.ZERO)
+                .totalOrders(totalOrdersCount)
+                .totalOrderItemsSold(totalItems != null ? totalItems : 0L)
+                .build();
+    }
+
+    public RevenueResponse getDashboardStats(String period) {
+        LocalDate startDate;
+        LocalDate endDate = LocalDate.now();
+
+        switch (period) {
+            case "this_month":
+                startDate = LocalDate.now().withDayOfMonth(1);
+                break;
+            case "this_year":
+                startDate = LocalDate.now().withDayOfYear(1);
+                break;
+            case "this_week":
+            default:
+                startDate = LocalDate.now().minusDays(7);
+                break;
+        }
+
+        // Convert sang LocalDateTime để quét trọn vẹn từ 00h00 đến 23h59
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
+        // Lấy dữ liệu Tổng quan
+        BigDecimal totalRev = orderRepository.getTotalAmount();
+        Long totalOrdersCount = orderRepository.getTotalOrders();
+        Long totalItems = orderItemRepository.getTotalQuantity();
+
+
+        // Lấy dữ liệu Biểu đồ (Mảng / List)
+        List<RevenueChartProjection> chartData = orderRepository.getRevenueChartData(startDateTime, endDateTime);
+
+        return RevenueResponse.builder()
+                .totalAmount(totalRev != null ? totalRev : BigDecimal.ZERO)
+                .totalOrders(totalOrdersCount != null ? totalOrdersCount : 0L)
+                .totalOrderItemsSold(totalItems != null ? totalItems : 0L)
+                .chartData(chartData)
+                .build();
+    }
+
 
 }

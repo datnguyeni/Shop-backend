@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -66,6 +68,19 @@ public class ProductController {
                 .message("Get product detail successfully")
                 .data(response)
                 .build();
+    }
+
+
+    @GetMapping
+    public ApiResponse<List<ProductsResponse>> getAllProducts() {
+        List<ProductsResponse> response = productService.getAllProducts();
+
+        return ApiResponse.<List<ProductsResponse>>builder()
+                .code(200)
+                .message("Get all products successfully")
+                .data(response)
+                .build();
+
     }
 
 

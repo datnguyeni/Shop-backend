@@ -306,24 +306,20 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        // 1. PUBLIC ENDPOINTS (Khách không cần đăng nhập vẫn vào được)
-                        // 1. PUBLIC ENDPOINTS (Khách không cần đăng nhập vẫn vào được)
+
                         .requestMatchers("/auth/**", "/login/**", "/oauth2/authorization/**").permitAll()
                         .requestMatchers("/product/**", "/category/**").permitAll()
-                        .requestMatchers("/user/create").permitAll() // <--- THÊM DÒNG NÀY ĐỂ MỞ CỬA CHO KHÁCH ĐĂNG KÝ
+                        .requestMatchers("/user/create").permitAll()
+                        .requestMatchers("/dashboard/**").permitAll()
 
-                        // [Tránh bẫy Fresher]: API của VNPay (IPN và Return) phải để public vì Server VNPay sẽ gọi trực tiếp vào đây, họ không có Token của User đâu nhé!
                         .requestMatchers("/payments/vnpay-return", "/payments/vnpay-ipn").permitAll()
 
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
 
-                        // 2. PROTECTED ENDPOINTS (Bắt buộc phải có Token hợp lệ - Đã đăng nhập)
-                        // Khách gọi vào đây sẽ bị ăn lỗi 401 Unauthorized ngay lập tức
-                        .requestMatchers("/cart/**").authenticated()   // Giỏ hàng
-                        .requestMatchers("/user/**").authenticated()   // Thông tin cá nhân
-                        .requestMatchers("/order/**").authenticated()  // Đặt hàng/Đơn hàng
+                        .requestMatchers("/cart/**").authenticated()
+                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers("/order/**").authenticated()
 
-                        // 3. Các request còn lại (nếu có) cũng bắt buộc đăng nhập
                         .anyRequest().authenticated()
                 )
                 // LOGIN GOOGLE

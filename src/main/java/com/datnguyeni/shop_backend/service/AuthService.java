@@ -53,10 +53,10 @@ public class AuthService {
     // LUỒNG LOGOUT
     public void logout(String token) {
         try {
-            // Khi User gửi API logout, token thường là Bearer ... -> Nhớ cắt chữ Bearer ở Controller trước khi truyền vào đây nhé!
+            // Khi User gửi API logout, token thường là Bearer ... -> Nhớ cắt chữ Bearer ở Controller trước khi truyền vào
 
             // Ở luồng logout, ta chỉ cần Parse token ra để lấy JTI và thời hạn thôi.
-            // Không cần Verify chữ ký ở đây nữa vì API /logout của em chắc chắn đã được SecurityFilterChain bảo vệ rồi (phải là token thật mới lọt vào được hàm này).
+            // Không cần Verify chữ ký ở đây nữa vì API /logout chắc chắn đã được SecurityFilterChain bảo vệ rồi
             JWSObject jwsObject = JWSObject.parse(token);
             JWTClaimsSet claims = JWTClaimsSet.parse(jwsObject.getPayload().toString());
 
@@ -65,7 +65,7 @@ public class AuthService {
 
             invalidatedTokenRepository.save(
                     InvalidatedToken.builder()
-                            .id(jti) // Đảm bảo trường id trong Entity là kiểu String
+                            .id(jti)
                             .expiryTime(exp)
                             .build()
             );

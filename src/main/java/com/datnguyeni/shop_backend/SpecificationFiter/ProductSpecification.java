@@ -26,6 +26,7 @@ public class ProductSpecification {
             if (minPrice == null && maxPrice == null) return criteriaBuilder.conjunction();
             if (minPrice != null && maxPrice != null) return criteriaBuilder.between(root.get("basePrice"), minPrice, maxPrice);
             if (minPrice != null) return criteriaBuilder.greaterThanOrEqualTo(root.get("basePrice"), minPrice);
+
             return criteriaBuilder.lessThanOrEqualTo(root.get("basePrice"), maxPrice);
         };
     }

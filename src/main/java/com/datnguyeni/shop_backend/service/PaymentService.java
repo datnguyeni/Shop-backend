@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ public class PaymentService {
         String vnp_OrderInfo = "Thanh toan don hang ma: " + order.getId();
         String vnp_OrderType = "other";
 
-        long amount = (long) (order.getTotalAmount() * 100);
+        BigDecimal amount = order.getTotalAmount().multiply(BigDecimal.valueOf(100));
 
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
@@ -106,6 +107,8 @@ public class PaymentService {
     /**
      * Hàm hứng dữ liệu trả về từ VNPay
      * Trả về true nếu thanh toán thành công và đã lưu, false nếu thất bại hoặc sai chữ ký
+     *
+     * Lưu đơn hàng vào dbo payment
      */
 
     public boolean handleVnPayCallback(HttpServletRequest request) {

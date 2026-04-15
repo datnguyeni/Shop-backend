@@ -37,10 +37,11 @@ public class PaymentController {
         String orderId = request.getParameter("vnp_TxnRef"); // Lấy mã đơn hàng từ VNPay trả về
 
         if (isSuccess) {
-            response.sendRedirect("http://localhost:3000/order-success?orderId=" + orderId);
+            response.sendRedirect("http://127.0.0.1:5500/order-detail.html?orderId=" + orderId);
         } else {
-            response.sendRedirect("http://localhost:3000/order-failed");
+            response.sendRedirect("http://127.0.0.1:5500/cart.html?status=failed");
         }
+
     }
 
 
