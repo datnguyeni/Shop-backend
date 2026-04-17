@@ -28,7 +28,7 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent") // mappedBy - tro vao ten bien
     private List<Category> children;
 
 }

@@ -1,5 +1,6 @@
 package com.datnguyeni.shop_backend.mapper;
 
+import com.datnguyeni.shop_backend.dto.requestDTO.ProductCreationRequest;
 import com.datnguyeni.shop_backend.dto.responseDTO.ProductVariantResponse;
 import com.datnguyeni.shop_backend.entity.ProductVariant;
 import org.mapstruct.Mapper;
@@ -8,4 +9,6 @@ import org.mapstruct.Mapper;
 public interface ProductVariantMapper {
 
     ProductVariantResponse toVariantResponse(ProductVariant productVariant);
+
+
 }

@@ -8,24 +8,24 @@ import java.util.List;
 public class ProductCreationRequest {
     private String name;
     private BigDecimal basePrice;
+//    private String color;
     private String description;
     private Long categoryId;
 
-    private List<VariantRequest> variants;
+//    private List<ImageRequest> images;
+//    @Data
+//    public static class ImageRequest {
+//        private String imageUrl;
+//        private Boolean isDefault;
+//    }
 
-    private List<ImageRequest> images;
+//    private List<VariantRequest> variants;
+//    @Data
+//    public static class VariantRequest {
+//        private String size;
+//        private String color;
+//        private Integer stockQuantity;
+//        private String sku;
+//    }
 
-    @Data
-    public static class VariantRequest {
-        private String size;
-        private String color;
-        private Integer stockQuantity;
-        private String sku;
-    }
-
-    @Data
-    public static class ImageRequest {
-        private String imageUrl;
-        private Boolean isDefault;
-    }
 }

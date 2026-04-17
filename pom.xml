@@ -80,6 +80,14 @@
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.39.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

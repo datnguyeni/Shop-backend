@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.Set;
 
+
 @Entity
 @Table(name = "product_variants") // Ánh xạ đúng tên bảng trong SQL
 @Getter

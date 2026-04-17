@@ -1,5 +1,6 @@
 package com.datnguyeni.shop_backend.mapper;
 
+import com.datnguyeni.shop_backend.dto.requestDTO.ProductCreationRequest;
 import com.datnguyeni.shop_backend.dto.responseDTO.ProductImageResponse;
 import com.datnguyeni.shop_backend.entity.ProductImage;
 import org.mapstruct.Mapper;
@@ -10,6 +11,7 @@ public interface ProductImageMapper {
 
     @Mapping(source = "defaultValue", target = "defaultValue")
     ProductImageResponse toImageResponse(ProductImage productImage);
+
 
 
 }
