@@ -311,6 +311,7 @@ public class SecurityConfig {
                         .requestMatchers("/product/**", "/category/**").permitAll()
                         .requestMatchers("/user/create").permitAll()
                         .requestMatchers("/dashboard/**").permitAll()
+                        .requestMatchers("/productVariant/**").permitAll()
 
                         .requestMatchers("/payments/vnpay-return", "/payments/vnpay-ipn").permitAll()
 

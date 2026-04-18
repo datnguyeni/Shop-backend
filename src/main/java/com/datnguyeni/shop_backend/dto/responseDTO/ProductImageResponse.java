@@ -12,5 +12,6 @@ public class ProductImageResponse {
 
     private String imageUrl;
     private boolean defaultValue;
+    private String color;
 
 }

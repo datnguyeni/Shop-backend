@@ -3,6 +3,7 @@ package com.datnguyeni.shop_backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -20,6 +21,7 @@ public class ProductVariant {
 
     private String size;
     private String color;
+    @Column(name = "stock_quantity")
     private Long stockQuantity;
     private String sku;
 
@@ -27,8 +29,8 @@ public class ProductVariant {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "variant", fetch = FetchType.LAZY)
-    private Set<ProductImage> images;
+    @OneToMany(mappedBy = "variant", fetch = FetchType.LAZY,  cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductImage> images = new HashSet<>();
 
     @Transient
     public String getDefaultImageUrl() {

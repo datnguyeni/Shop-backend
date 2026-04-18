@@ -26,6 +26,9 @@ public class ProductImage {
     @Column(name = "display_order")
     private Integer displayOrder;
 
+    @Column(name = "color")
+    private String color;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
